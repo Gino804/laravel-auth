@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Models\Project;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Str;
 
 class ProjectController extends Controller
 {
@@ -13,7 +14,7 @@ class ProjectController extends Controller
      */
     public function index()
     {
-        $projects = Project::all();
+        $projects = Project::all()->sortByDesc('updated_at');
         return view('admin.projects.index', compact('projects'));
     }
 
@@ -22,7 +23,7 @@ class ProjectController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.projects.create');
     }
 
     /**
@@ -30,7 +31,14 @@ class ProjectController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->all();
+        $project = new Project();
+        $project->title = $data['title'];
+        $project->description = $data['description'];
+        $project->slug = Str::slug($project->title, '-');
+        $project->save();
+
+        return to_route('admin.projects.show', $project);
     }
 
     /**
@@ -46,7 +54,7 @@ class ProjectController extends Controller
      */
     public function edit(Project $project)
     {
-        //
+        return view('admin.projects.edit', compact('project'));
     }
 
     /**
@@ -54,7 +62,11 @@ class ProjectController extends Controller
      */
     public function update(Request $request, Project $project)
     {
-        //
+        $data = $request->all();
+        $data['slug'] = Str::slug($project->title, '-');
+        $project->update($data);
+
+        return to_route('admin.projects.show', compact('project'));
     }
 
     /**
