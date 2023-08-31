@@ -9,6 +9,7 @@
     <p><b>Last update: </b>{{ $project->updated_at }}</p>
     <hr>
 
+    <a class="btn btn-warning" href="{{ route('admin.projects.edit', $project) }}">Edit</a>
     <form class="d-inline" method="POST" action="{{ route('admin.projects.destroy', $project) }}">
       @csrf
       @method('DELETE')
