@@ -27,6 +27,9 @@
           <li class="nav-item">
             <a class="nav-link" href="{{ route('admin.projects.index') }}">Projects</a>
           </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{ route('admin.projects.create') }}">Add Project</a>
+          </li>
         @endauth
       </ul>
 
