@@ -32,6 +32,13 @@ class ProjectController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate(
+            [
+                'title' => 'required|string|max:20',
+                'description' => 'required|string'
+            ]
+        );
+
         $data = $request->all();
         $project = new Project();
         $project->title = $data['title'];
@@ -63,6 +70,13 @@ class ProjectController extends Controller
      */
     public function update(Request $request, Project $project)
     {
+        $request->validate(
+            [
+                'title' => 'required|string|max:20',
+                'description' => 'required|string'
+            ]
+        );
+
         $data = $request->all();
         $data['slug'] = Str::slug($data['title'], '-');
         $project->update($data);

@@ -10,14 +10,26 @@
   <div class="col-6">
     <div class="mb-3">
       <label for="title" class="form-label">Title</label>
-      <input type="text" class="form-control" id="title" name="title"
-        value="{{ old('title', $project->title) }}">
+      <input type="text"
+        class="form-control @error('title') is-invalid @elseif(old('title')) is-valid @enderror"
+        id="title" name="title" value="{{ old('title', $project->title) }}">
+      @error('title')
+        <div class="invalid-feedback">
+          {{ $message }}
+        </div>
+      @enderror
     </div>
   </div>
   <div class="col-12">
     <div class="mb-3">
       <label for="surname" class="form-label">Description</label>
-      <textarea class="form-control" id="description" name="description" rows="5">{{ old('description', $project->description) }}</textarea>
+      <textarea class="form-control @error('description') is-invalid @elseif(old('description')) is-valid @enderror"
+        id="description" name="description" rows="5">{{ old('description', $project->description) }}</textarea>
+      @error('description')
+        <div class="invalid-feedback">
+          {{ $message }}
+        </div>
+      @enderror
     </div>
   </div>
   <div class="col-1">
