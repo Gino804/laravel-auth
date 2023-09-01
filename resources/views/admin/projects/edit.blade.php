@@ -2,9 +2,6 @@
 
 @section('content')
   <div class="container mt-4">
-    <form method="POST" action="{{ route('admin.projects.update', $project) }}">
-      @method('PUT')
-      @include('admin.projects.includes.form-fields')
-    </form>
+    @include('includes.projects.form')
   </div>
 @endsection
