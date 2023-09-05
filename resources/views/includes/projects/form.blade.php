@@ -1,8 +1,8 @@
 @if ($project->exists)
-  <form method="POST" action="{{ route('admin.projects.update', $project) }}">
+  <form method="POST" action="{{ route('admin.projects.update', $project) }}" enctype="multipart/form-data">
     @method('PUT')
   @else
-    <form method="POST" action="{{ route('admin.projects.store') }}">
+    <form method="POST" action="{{ route('admin.projects.store') }}" enctype="multipart/form-data">
 @endif
 
 @csrf
@@ -26,6 +26,19 @@
       <textarea class="form-control @error('description') is-invalid @elseif(old('description')) is-valid @enderror"
         id="description" name="description" rows="5">{{ old('description', $project->description) }}</textarea>
       @error('description')
+        <div class="invalid-feedback">
+          {{ $message }}
+        </div>
+      @enderror
+    </div>
+  </div>
+  <div class="col-12">
+    <div class="mb-3">
+      <label for="image" class="form-label">Image</label>
+      <input type="file"
+        class="form-control @error('image') is-invalid @elseif(old('image')) is-valid @enderror"
+        id="image" name="image" value="{{ old('image', $project->image) }}">
+      @error('image')
         <div class="invalid-feedback">
           {{ $message }}
         </div>

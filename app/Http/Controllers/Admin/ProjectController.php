@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Models\Project;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class ProjectController extends Controller
@@ -35,15 +36,23 @@ class ProjectController extends Controller
         $request->validate(
             [
                 'title' => 'required|string|max:20',
-                'description' => 'required|string'
+                'description' => 'required|string',
+                'image' => 'nullable|file'
             ]
         );
 
         $data = $request->all();
         $project = new Project();
+
+        if (array_key_exists('image', $data)) {
+            $img_url = Storage::putFile('project_images', $data['image']);
+            $data['image'] = $img_url;
+        }
+
         $project->title = $data['title'];
         $project->description = $data['description'];
         $project->slug = Str::slug($project->title, '-');
+        $project->image = $data['image'];
         $project->save();
 
         return to_route('admin.projects.show', $project);
@@ -73,11 +82,19 @@ class ProjectController extends Controller
         $request->validate(
             [
                 'title' => 'required|string|max:20',
-                'description' => 'required|string'
+                'description' => 'required|string',
+                'image' => 'nullable|file'
             ]
         );
 
         $data = $request->all();
+
+        if (array_key_exists('image', $data)) {
+            if ($project->image) Storage::delete($project->image);
+            $img_url = Storage::putFile('project_images', $data['image']);
+            $data['image'] = $img_url;
+        }
+
         $data['slug'] = Str::slug($data['title'], '-');
         $project->update($data);
 
@@ -89,6 +106,7 @@ class ProjectController extends Controller
      */
     public function destroy(Project $project)
     {
+        if ($project->image) Storage::delete($project->image);
         $project->delete();
         return to_route('admin.projects.index');
     }
