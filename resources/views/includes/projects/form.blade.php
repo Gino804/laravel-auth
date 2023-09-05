@@ -37,7 +37,7 @@
       <label for="image" class="form-label">Image</label>
       <input type="file"
         class="form-control @error('image') is-invalid @elseif(old('image')) is-valid @enderror"
-        id="image" name="image" value="{{ old('image', $project->image) }}">
+        id="image" name="image">
       @error('image')
         <div class="invalid-feedback">
           {{ $message }}

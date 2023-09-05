@@ -3,6 +3,13 @@
 @section('content')
   <div class="container mt-5">
     <a href="{{ route('admin.projects.index') }}">Go back</a>
+
+    @if ($project->image)
+      <figure>
+        <img src="{{ asset('storage/' . $project->image) }}" alt="{{ $project->title }}">
+      </figure>
+    @endif
+
     <h1 class="mt-2">{{ $project->title }}</h1>
     <p>{{ $project->description }}</p>
     <p><b>Created at: </b>{{ $project->created_at }}</p>
